@@ -11,6 +11,12 @@ function config($httpProvider, $routeProvider, $locationProvider) {
             restricted: false
           }
     })
+    .otherwise({
+        templateUrl: 'datapath.html',
+        access: {
+            restricted: false
+          }
+    })
     // .when('/datapath', {
     //     templateUrl: 'app/html/datapath.html',
     //     controller: 'homeCtrl',
@@ -23,38 +29,80 @@ function config($httpProvider, $routeProvider, $locationProvider) {
     // });
 }
 
+// function run($rootScope, $location, $window, AuthFactory) {
+//     $rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
+//       if (nextRoute.access !== undefined && nextRoute.access.restricted && !$window.sessionStorage.token && !AuthFactory.isLoggedIn) {
+//         event.preventDefault();
+//         $location.path('/');
+//       }
+//     });
+//   }
+
 angular.module('nubewell', ['ngRoute']).controller('homeCtrl', function ($scope, $http, $timeout) {
+
+    var datapath;
+    var checked;
 
     $http.get('datapath.json').then(function (response) {
         console.log(response.data.data);
 
         $scope.datapath=response.data.data;
-
+        datapath=$scope.datapath;
     });
 
-    $scope.filterdata = function(dpath){
+    // $scope.checkboxes=[];
 
-        var fport=$scope.fport;
-        var falias=$scope.falias;
-        var fshut=$scope.fshut;
-        var datapath=$scope.datapath;
+    // $scope.alert = function(index, event){
         
-        console.log("fport ",fport)
-        console.log("falias ",falias)
-        console.log("fshut ",fshut)
+    //       alert("checkbox " + index + " is " + $scope.checkbox[index]);
+        
+    //     }
+    $scope.checked = function(index){
+        console.log("checked index",$scope.datapath[index]);
+        checked=index;
 
-        
-        if(fport||falias||fshut){
-            return dpath.portname == fport && dpath.aliasname == falias && dpath.shutdown == fshut;
-            
-        }
-        else{
-                $scope.datapath=datapath
-                // alert("no filters");                
-        }
-
-        
+        $scope.datapath[index]['flag']===undefined?$scope.datapath[index]['flag']=true:$scope.datapath[index]['flag']=false;
+        // alert($scope.datapath[index]['flag']);
+        datapath=$scope.datapath;
+        console.log($scope.datapath)
     };
+
+    $scope.editpath = function(){
+        console.log("editing");
+        datapath.map((item,index)=>{
+            console.log("flag outside ",item.flag)
+            if(item.flag===true){
+                alert(item.portname);
+                console.log(item.portname);
+            }
+        })
+    };
+
+
+
+    // $scope.filterdata = function(dpath){
+
+    //     var fport=$scope.fport;
+    //     var falias=$scope.falias;
+    //     var fshut=$scope.fshut;
+    //     var datapath=$scope.datapath;
+        
+    //     console.log("fport ",fport)
+    //     console.log("falias ",falias)
+    //     console.log("fshut ",fshut)
+
+        
+    //     if(fport||falias||fshut){
+    //         return dpath.portname == fport && dpath.aliasname == falias && dpath.shutdown == fshut;
+            
+    //     }
+    //     else{
+    //             $scope.datapath=datapath
+    //             // alert("no filters");                
+    //     }
+
+        
+    // };
 
 
 });

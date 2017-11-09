@@ -58,7 +58,7 @@
                           </div>
                           <div class="col-lg-5">
                             <!-- <button class="btn btn-primary" ng-click="filterdata()">Filter</button>    -->
-                            <button class="btn btn-primary" >Edit</button>
+                            <button class="btn" ng-click="editpath()">Edit</button>
                             
                           </div>
                         </div>
@@ -87,7 +87,7 @@
                                     <td>mtu</td>
                                   </tr>
                                   <tr ng-repeat="data in datapath |filter:{portname:fport,aliasname:falias,shutdown:fshut}">
-                                    <th><input type="checkbox" class="form-control"></th>
+                                    <th><input type="checkbox" class="form-control" ng-click="checked($index)"></th>
                                     <td>{{data['portname']}}</td>
                                     <td>{{data['aliasname']}}</td>
                                     <td>{{data['portdesp']}}</td>
